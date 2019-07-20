@@ -1,0 +1,8 @@
+{
+  "name": "sleeply",
+  "version": "1.0.0",
+  "description": "Oh Baby Sleep Logging",
+  "main": "index.js",
+  "author": "Douglas Labbe",
+  "license": "MIT"
+}
