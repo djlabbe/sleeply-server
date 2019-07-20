@@ -41,8 +41,17 @@ function addEntry(root, { note }, { prisma, request }, info) {
   });
 }
 
+function addChild(root, { name }, { prisma, request }, info) {
+  const userId = authenticate(request);
+  return prisma.createChild({
+    name,
+    parent: { connect: { id: userId } }
+  });
+}
+
 module.exports = {
   signup,
   login,
-  addEntry
+  addEntry,
+  addChild
 };

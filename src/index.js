@@ -4,11 +4,13 @@ const Query = require('./resolvers/Query');
 const Mutation = require('./resolvers/Mutation');
 const User = require('./resolvers/User');
 const LogEntry = require('./resolvers/LogEntry');
+const Child = require('./resolvers/Child');
 
 const resolvers = {
   Query,
   Mutation,
   User,
+  Child,
   LogEntry
 };
 

@@ -3,7 +3,14 @@ type User {
   name: String!
   email: String! @unique
   password: String!
+  children: [Child!]!
   logEntries: [LogEntry!]!
+}
+
+type Child {
+  id: ID! @id
+  name: String!
+  parent: User!
 }
 
 type LogEntry {
@@ -12,4 +19,5 @@ type LogEntry {
   note: String!
   createdBy: User
 }
+
 

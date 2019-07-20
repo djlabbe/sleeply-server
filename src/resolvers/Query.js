@@ -1,9 +1,8 @@
 const { authenticate } = require('../services/auth');
 
-// Get all log entries made by current user
-function userFeed(root, args, { prisma, request }, info) {
+function me(root, args, { prisma, request }, info) {
   const userId = authenticate(request);
-  return prisma.user({ id: userId }).logEntries();
+  return prisma.user({ id: userId });
 }
 
 // Get all log entries for all users
@@ -13,6 +12,7 @@ function globalFeed(root, args, { prisma }, info) {
 }
 
 module.exports = {
-  userFeed,
-  globalFeed
+  // userFeed,
+  globalFeed,
+  me
 };
