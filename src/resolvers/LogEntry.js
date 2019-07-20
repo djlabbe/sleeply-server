@@ -1,5 +1,5 @@
-function createdBy(parent, args, context) {
-  return context.prisma.logEntry({ id: parent.id }).createdBy();
+function createdBy({ id }, args, { prisma }) {
+  return prisma.logEntry({ id }).createdBy();
 }
 
 module.exports = {

@@ -8,7 +8,7 @@ function userFeed(root, args, { prisma, request }, info) {
 
 // Get all log entries for all users
 // TODO: Require Admin
-function globalFeed(root, args, { prisma, request }, info) {
+function globalFeed(root, args, { prisma }, info) {
   return prisma.logEntries();
 }
 

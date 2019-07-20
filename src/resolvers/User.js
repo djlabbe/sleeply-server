@@ -1,8 +1,8 @@
 const { authenticate } = require('../services/auth');
 
-function logEntries(parent, args, { prisma, request }) {
+function logEntries({ id }, args, { prisma, request }) {
   authenticate(request);
-  return prisma.user({ id: parent.id }).logEntries();
+  return prisma.user({ id }).logEntries();
 }
 
 module.exports = {

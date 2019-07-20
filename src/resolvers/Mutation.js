@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const { authenticate } = require('../services/auth');
 
-async function signup(parent, args, { prisma }, info) {
+async function signup(root, args, { prisma }, info) {
   const password = await bcrypt.hash(args.password, 10);
   const user = await prisma.createUser({ ...args, password });
   const token = jwt.sign({ userId: user.id }, keys.jwtSecret);
@@ -14,7 +14,7 @@ async function signup(parent, args, { prisma }, info) {
   };
 }
 
-async function login(parent, { email, password }, { prisma }, info) {
+async function login(root, { email, password }, { prisma }, info) {
   const user = await prisma.user({ email });
   if (!user) {
     throw new Error("Oops, that's not a match");
@@ -33,10 +33,10 @@ async function login(parent, { email, password }, { prisma }, info) {
   };
 }
 
-function addEntry(root, args, { prisma, request }, info) {
+function addEntry(root, { note }, { prisma, request }, info) {
   const userId = authenticate(request);
   return prisma.createLogEntry({
-    note: args.note,
+    note,
     createdBy: { connect: { id: userId } }
   });
 }
