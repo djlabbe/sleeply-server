@@ -10,12 +10,49 @@ type Child {
   id: ID! @id
   name: String!
   parent: User!
-  logEntries: [LogEntry!]!
+  morningEntries: [MorningEntry!]!
+  napEntries: [NapEntry!]!
+  bedTimeEntries: [BedTimeEntry!]!
+  nightWakingEntries: [NightWakingEntry!]!
 }
 
-type LogEntry {
+type MorningEntry {
   id: ID! @id
   child: Child!
+  wakeUpTime: DateTime!
+  outOfBedTime: DateTime!
+  note: String!
+  createdBy: User!
+  createdAt: DateTime! @createdAt
+}
+
+type NapEntry {
+  id: ID! @id
+  child: Child!
+  downTime: DateTime!
+  asleepTime: DateTime!
+  wakeUpTime: DateTime!
+  note: String!
+  createdBy: User!
+  createdAt: DateTime! @createdAt
+}
+
+type BedTimeEntry {
+  id: ID! @id
+  child: Child!
+  startTime: DateTime!
+  inBedTime: DateTime!
+  asleepTime: DateTime!
+  note: String!
+  createdBy: User!
+  createdAt: DateTime! @createdAt
+}
+
+type NightWakingEntry {
+  id: ID! @id
+  child: Child!
+  wakeUpTime: DateTime!
+  asleepTime: DateTime!
   note: String!
   createdBy: User!
   createdAt: DateTime! @createdAt

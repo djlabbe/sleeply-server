@@ -3,14 +3,42 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
   type Query {
     me: User
-    globalFeed: [LogEntry!]! # Display all log entries globally
   }
 
   type Mutation {
     signup(email: String!, password: String!, name: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
-    addEntry(note: String!, childId: ID!): LogEntry!
     addChild(name: String!): Child
+
+    addMorningEntry(
+      childId: ID!
+      note: String!
+      wakeUpTime: String!
+      outOfBedTime: String!
+    ): MorningEntry!
+
+    addNapEntry(
+      childId: ID!
+      note: String!
+      downTime: String!
+      asleepTime: String!
+      wakeUpTime: String!
+    ): NapEntry!
+
+    addBedTimeEntry(
+      childId: ID!
+      note: String!
+      startTime: String!
+      inBedTime: String!
+      asleepTime: String!
+    ): BedTimeEntry!
+
+    addNightWakingEntry(
+      childId: ID!
+      note: String!
+      wakeUpTime: String!
+      asleepTime: String!
+    ): NightWakingEntry!
   }
 
   type User {
@@ -24,7 +52,10 @@ const typeDefs = gql`
     id: ID!
     name: String!
     parent: User!
-    logEntries: [LogEntry!]!
+    morningEntries: [MorningEntry!]!
+    napEntries: [NapEntry!]!
+    bedTimeEntries: [BedTimeEntry!]!
+    nightWakingEntries: [NightWakingEntry!]!
   }
 
   type AuthPayload {
@@ -32,8 +63,39 @@ const typeDefs = gql`
     user: User
   }
 
-  type LogEntry {
+  type MorningEntry {
     id: ID!
+    wakeUpTime: String!
+    outOfBedTime: String!
+    note: String!
+    createdBy: User!
+    createdAt: String!
+  }
+
+  type NapEntry {
+    id: ID!
+    downTime: String!
+    asleepTime: String!
+    wakeUpTime: String!
+    note: String!
+    createdBy: User!
+    createdAt: String!
+  }
+
+  type BedTimeEntry {
+    id: ID!
+    startTime: String!
+    inBedTime: String!
+    asleepTime: String!
+    note: String!
+    createdBy: User!
+    createdAt: String!
+  }
+
+  type NightWakingEntry {
+    id: ID!
+    wakeUpTime: String!
+    asleepTime: String!
     note: String!
     createdBy: User!
     createdAt: String!

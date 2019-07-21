@@ -5,14 +5,13 @@ function me(root, args, { prisma, request }, info) {
   return prisma.user({ id: userId });
 }
 
-// Get all log entries for all users
-// TODO: Require Admin
-function globalFeed(root, args, { prisma, request }, info) {
-  const userId = authenticate(userId);
-  return prisma.logEntries();
-}
+// // Get all log entries for all users
+// // TODO: Require Admin
+// function globalFeed(root, args, { prisma, request }, info) {
+//   const userId = authenticate(userId);
+//   return prisma.logEntries();
+// }
 
 module.exports = {
-  globalFeed,
   me
 };

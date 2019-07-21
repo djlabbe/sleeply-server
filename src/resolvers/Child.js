@@ -1,15 +1,33 @@
 const { authenticate } = require('../services/auth');
 
-function parent({ id }, args, { prisma }) {
+function parent({ id }, args, { prisma }, info) {
   return prisma.child({ id }).parent();
 }
 
-function logEntries({ id }, args, { prisma, request }, info) {
+function morningEntries({ id }, args, { prisma, request }, info) {
   authenticate(request);
-  return prisma.child({ id }).logEntries();
+  return prisma.child({ id }).morningEntries();
+}
+
+function napEntries({ id }, args, { prisma, request }, info) {
+  authenticate(request);
+  return prisma.child({ id }).napEntries();
+}
+
+function bedTimeEntries({ id }, args, { prisma, request }, info) {
+  authenticate(request);
+  return prisma.child({ id }).bedTimeEntries();
+}
+
+function nightWakingEntries({ id }, args, { prisma, request }, info) {
+  authenticate(request);
+  return prisma.child({ id }).nightWakingEntries();
 }
 
 module.exports = {
   parent,
-  logEntries
+  morningEntries,
+  napEntries,
+  bedTimeEntries,
+  nightWakingEntries
 };
