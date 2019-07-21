@@ -5,12 +5,6 @@ const typeDefs = gql`
     me: User
   }
 
-  type LogConnection {
-    cursor: String!
-    hasMore: Boolean!
-    logEntries: [LogEntry!]!
-  }
-
   type Mutation {
     signup(email: String!, password: String!, name: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
@@ -50,16 +44,20 @@ const typeDefs = gql`
       asleepTime: String!
     ): LogEntry!
   }
+  type AuthPayload {
+    token: String
+    user: User
+  }
 
   type User {
     id: ID!
-    role: UserRoll!
+    role: UserRole!
     name: String!
     email: String!
     children: [Child!]!
   }
 
-  enum UserRoll {
+  enum UserRole {
     ADMIN
     USER
   }
@@ -71,16 +69,10 @@ const typeDefs = gql`
     logs(pageSize: Int, after: String): LogConnection!
   }
 
-  type AuthPayload {
-    token: String
-    user: User
-  }
-
-  enum LogType {
-    MORNING
-    NAP
-    BEDTIME
-    NIGHT
+  type LogConnection {
+    cursor: String!
+    hasMore: Boolean!
+    logEntries: [LogEntry!]!
   }
 
   type LogEntry {
@@ -96,6 +88,13 @@ const typeDefs = gql`
     startTime: String
     asleepTime: String
     inBedTime: String
+  }
+
+  enum LogType {
+    MORNING
+    NAP
+    BEDTIME
+    NIGHT
   }
 `;
 
