@@ -4,13 +4,12 @@ const typeDefs = gql`
   type Query {
     me: User
     globalFeed: [LogEntry!]! # Display all log entries globally
-    # userFeed: [LogEntry!]! # Display all log entries for all of user's children
   }
 
   type Mutation {
     signup(email: String!, password: String!, name: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
-    addEntry(note: String!): LogEntry!
+    addEntry(note: String!, childId: ID!): LogEntry!
     addChild(name: String!): Child
   }
 
@@ -19,13 +18,13 @@ const typeDefs = gql`
     name: String!
     email: String!
     children: [Child!]!
-    logEntries: [LogEntry!]!
   }
 
   type Child {
     id: ID!
     name: String!
     parent: User!
+    logEntries: [LogEntry!]!
   }
 
   type AuthPayload {
@@ -37,6 +36,7 @@ const typeDefs = gql`
     id: ID!
     note: String!
     createdBy: User!
+    createdAt: String!
   }
 `;
 

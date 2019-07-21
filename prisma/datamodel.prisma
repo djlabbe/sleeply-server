@@ -4,20 +4,21 @@ type User {
   email: String! @unique
   password: String!
   children: [Child!]!
-  logEntries: [LogEntry!]!
 }
 
 type Child {
   id: ID! @id
   name: String!
   parent: User!
+  logEntries: [LogEntry!]!
 }
 
 type LogEntry {
   id: ID! @id
-  createdAt: DateTime! @createdAt
+  child: Child!
   note: String!
-  createdBy: User
+  createdBy: User!
+  createdAt: DateTime! @createdAt
 }
 
 

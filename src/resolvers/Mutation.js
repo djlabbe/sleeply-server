@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const { authenticate } = require('../services/auth');
 
+// Register a new user
 async function signup(root, args, { prisma }, info) {
   const password = await bcrypt.hash(args.password, 10);
   const user = await prisma.createUser({ ...args, password });
@@ -14,6 +15,7 @@ async function signup(root, args, { prisma }, info) {
   };
 }
 
+// Authenticate a user
 async function login(root, { email, password }, { prisma }, info) {
   const user = await prisma.user({ email });
   if (!user) {
@@ -33,10 +35,19 @@ async function login(root, { email, password }, { prisma }, info) {
   };
 }
 
-function addEntry(root, { note }, { prisma, request }, info) {
+// Record a new log entry
+async function addEntry(root, { note, childId }, { prisma, request }, info) {
   const userId = authenticate(request);
+
+  // Only the child's parent(s) are authorized to create a LogEntry
+  const parent = await prisma.child({ id: childId }).parent();
+  if (userId !== parent.id) {
+    throw new Error('Not authorized');
+  }
+
   return prisma.createLogEntry({
-    note,
+    note: note,
+    child: { connect: { id: childId } },
     createdBy: { connect: { id: userId } }
   });
 }

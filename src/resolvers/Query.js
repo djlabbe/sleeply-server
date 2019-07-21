@@ -7,12 +7,12 @@ function me(root, args, { prisma, request }, info) {
 
 // Get all log entries for all users
 // TODO: Require Admin
-function globalFeed(root, args, { prisma }, info) {
+function globalFeed(root, args, { prisma, request }, info) {
+  const userId = authenticate(userId);
   return prisma.logEntries();
 }
 
 module.exports = {
-  // userFeed,
   globalFeed,
   me
 };
