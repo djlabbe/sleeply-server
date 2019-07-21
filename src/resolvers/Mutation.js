@@ -58,7 +58,7 @@ async function addMorningEntry(
 
 async function addNapEntry(
   root,
-  { note, childId, downTime, asleepTime, wakeUpTime },
+  { note, childId, startTime, asleepTime, wakeUpTime },
   { prisma, request },
   info
 ) {
@@ -73,7 +73,7 @@ async function addNapEntry(
   return prisma.createNapEntry({
     child: { connect: { id: childId } },
     note,
-    downTime,
+    startTime,
     asleepTime,
     wakeUpTime,
     createdBy: { connect: { id: userId } }

@@ -30,7 +30,7 @@ type MorningEntry {
 type NapEntry {
   id: ID! @id
   child: Child!
-  downTime: DateTime!
+  startTime: DateTime!
   asleepTime: DateTime!
   wakeUpTime: DateTime!
   note: String!

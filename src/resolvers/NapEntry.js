@@ -6,8 +6,8 @@ function createdAt({ id }, args, { prisma }, info) {
   return prisma.napEntry({ id }).createdAt();
 }
 
-function downTime({ id }, args, { prisma }, info) {
-  return prisma.napEntry({ id }).downTime();
+function startTime({ id }, args, { prisma }, info) {
+  return prisma.napEntry({ id }).startTime();
 }
 
 function asleepTime({ id }, args, { prisma }, info) {
@@ -21,7 +21,7 @@ function wakeUpTime({ id }, args, { prisma }, info) {
 module.exports = {
   createdBy,
   createdAt,
-  downTime,
+  startTime,
   asleepTime,
   wakeUpTime
 };

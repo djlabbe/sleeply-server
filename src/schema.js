@@ -28,7 +28,7 @@ const typeDefs = gql`
     addNapEntry(
       childId: ID!
       note: String!
-      downTime: String!
+      startTime: String!
       asleepTime: String!
       wakeUpTime: String!
     ): NapEntry!
@@ -88,7 +88,7 @@ const typeDefs = gql`
 
   type NapEntry {
     id: ID!
-    downTime: String!
+    startTime: String!
     asleepTime: String!
     wakeUpTime: String!
     note: String!
