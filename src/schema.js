@@ -3,7 +3,12 @@ const { gql } = require('apollo-server');
 const typeDefs = gql`
   type Query {
     me: User
-    logsForChild(childId: ID!): [LogEntry!]!
+    childLogs(childId: ID!, pageSize: Int, after: String): LogConnection!
+  }
+  type LogConnection {
+    cursor: String!
+    hasMore: Boolean!
+    logEntries: [LogEntry!]!
   }
 
   type Mutation {
@@ -48,10 +53,10 @@ const typeDefs = gql`
 
   type User {
     id: ID!
+    role: UserRoll!
     name: String!
     email: String!
     children: [Child!]!
-    role: UserRoll!
   }
 
   enum UserRoll {
