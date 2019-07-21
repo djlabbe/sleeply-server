@@ -4,20 +4,14 @@ const Query = require('./resolvers/Query');
 const Mutation = require('./resolvers/Mutation');
 const User = require('./resolvers/User');
 const Child = require('./resolvers/Child');
-const MorningEntry = require('./resolvers/MorningEntry');
-const NapEntry = require('./resolvers/NapEntry');
-const BedTimeEntry = require('./resolvers/BedTimeEntry');
-const NightWakingEntry = require('./resolvers/NightWakingEntry');
+const LogEntry = require('./resolvers/LogEntry');
 
 const resolvers = {
   Query,
   Mutation,
   User,
   Child,
-  MorningEntry,
-  NapEntry,
-  BedTimeEntry,
-  NightWakingEntry
+  LogEntry
 };
 
 const server = new ApolloServer({

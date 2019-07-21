@@ -3,14 +3,7 @@ const { gql } = require('apollo-server');
 const typeDefs = gql`
   type Query {
     me: User
-    logsForChild(childId: ID!): ChildLogs!
-  }
-
-  type ChildLogs {
-    morningEntries: [MorningEntry!]!
-    napEntries: [NapEntry!]!
-    bedTimeEntries: [BedTimeEntry!]!
-    nightWakingEntries: [NightWakingEntry!]!
+    logsForChild(childId: ID!): [LogEntry!]!
   }
 
   type Mutation {
@@ -20,33 +13,37 @@ const typeDefs = gql`
 
     addMorningEntry(
       childId: ID!
+      date: String!
       note: String!
       wakeUpTime: String!
       outOfBedTime: String!
-    ): MorningEntry!
+    ): LogEntry!
 
     addNapEntry(
       childId: ID!
+      date: String!
       note: String!
       startTime: String!
       asleepTime: String!
       wakeUpTime: String!
-    ): NapEntry!
+    ): LogEntry!
 
     addBedTimeEntry(
       childId: ID!
+      date: String!
       note: String!
       startTime: String!
       inBedTime: String!
       asleepTime: String!
-    ): BedTimeEntry!
+    ): LogEntry!
 
-    addNightWakingEntry(
+    addNightEntry(
       childId: ID!
+      date: String!
       note: String!
       wakeUpTime: String!
       asleepTime: String!
-    ): NightWakingEntry!
+    ): LogEntry!
   }
 
   type User {
@@ -66,10 +63,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     parent: User!
-    morningEntries: [MorningEntry!]!
-    napEntries: [NapEntry!]!
-    bedTimeEntries: [BedTimeEntry!]!
-    nightWakingEntries: [NightWakingEntry!]!
+    logEntries: [LogEntry!]!
   }
 
   type AuthPayload {
@@ -77,42 +71,26 @@ const typeDefs = gql`
     user: User
   }
 
-  type MorningEntry {
-    id: ID!
-    wakeUpTime: String!
-    outOfBedTime: String!
-    note: String!
-    createdBy: User!
-    createdAt: String!
+  enum LogType {
+    MORNING
+    NAP
+    BEDTIME
+    NIGHT
   }
 
-  type NapEntry {
+  type LogEntry {
     id: ID!
-    startTime: String!
-    asleepTime: String!
-    wakeUpTime: String!
-    note: String!
+    date: String!
     createdBy: User!
     createdAt: String!
-  }
-
-  type BedTimeEntry {
-    id: ID!
-    startTime: String!
-    inBedTime: String!
-    asleepTime: String!
+    child: Child!
+    type: LogType!
     note: String!
-    createdBy: User!
-    createdAt: String!
-  }
-
-  type NightWakingEntry {
-    id: ID!
-    wakeUpTime: String!
-    asleepTime: String!
-    note: String!
-    createdBy: User!
-    createdAt: String!
+    wakeUpTime: String
+    outOfBedTime: String
+    startTime: String
+    asleepTime: String
+    inBedTime: String
   }
 `;
 

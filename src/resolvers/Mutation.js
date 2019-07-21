@@ -35,7 +35,7 @@ async function login(root, { email, password }, { prisma }, info) {
 
 async function addMorningEntry(
   root,
-  { note, childId, wakeUpTime, outOfBedTime },
+  { note, date, childId, wakeUpTime, outOfBedTime },
   { prisma, request },
   info
 ) {
@@ -47,8 +47,10 @@ async function addMorningEntry(
     throw new Error('Not authorized');
   }
 
-  return prisma.createMorningEntry({
+  return prisma.createLogEntry({
     child: { connect: { id: childId } },
+    date,
+    type: 'MORNING',
     note,
     wakeUpTime,
     outOfBedTime,
@@ -58,7 +60,7 @@ async function addMorningEntry(
 
 async function addNapEntry(
   root,
-  { note, childId, startTime, asleepTime, wakeUpTime },
+  { note, date, childId, startTime, asleepTime, wakeUpTime },
   { prisma, request },
   info
 ) {
@@ -70,8 +72,10 @@ async function addNapEntry(
     throw new Error('Not authorized');
   }
 
-  return prisma.createNapEntry({
+  return prisma.createLogEntry({
     child: { connect: { id: childId } },
+    date,
+    type: 'NAP',
     note,
     startTime,
     asleepTime,
@@ -82,7 +86,7 @@ async function addNapEntry(
 
 async function addBedTimeEntry(
   root,
-  { note, childId, startTime, inBedTime, asleepTime },
+  { note, date, childId, startTime, inBedTime, asleepTime },
   { prisma, request },
   info
 ) {
@@ -94,8 +98,10 @@ async function addBedTimeEntry(
     throw new Error('Not authorized');
   }
 
-  return prisma.createBedTimeEntry({
+  return prisma.createLogEntry({
     child: { connect: { id: childId } },
+    date,
+    type: 'BEDTIME',
     note,
     startTime,
     inBedTime,
@@ -104,9 +110,9 @@ async function addBedTimeEntry(
   });
 }
 
-async function addNightWakingEntry(
+async function addNightEntry(
   root,
-  { note, childId, wakeUpTime, asleepTime },
+  { note, date, childId, wakeUpTime, asleepTime },
   { prisma, request },
   info
 ) {
@@ -118,8 +124,10 @@ async function addNightWakingEntry(
     throw new Error('Not authorized');
   }
 
-  return prisma.createNightWakingEntry({
+  return prisma.createLogEntry({
     child: { connect: { id: childId } },
+    date,
+    type: 'NIGHT',
     note,
     wakeUpTime,
     asleepTime,
@@ -141,6 +149,6 @@ module.exports = {
   addMorningEntry,
   addNapEntry,
   addBedTimeEntry,
-  addNightWakingEntry,
+  addNightEntry,
   addChild
 };
