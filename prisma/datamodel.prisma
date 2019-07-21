@@ -26,6 +26,7 @@ type LogEntry {
   startTime: DateTime
   asleepTime: DateTime
   inBedTime: DateTime
+  createdAt: DateTime! @createdAt
 }
 
 enum LogType {
