@@ -6,21 +6,24 @@ function parent({ id }, args, { prisma, user }, info) {
   return prisma.child({ id }).parent();
 }
 
-async function logs({ id }, { pageSize = 20, after }, { prisma, user }, info) {
+async function logs({ id }, { pageSize = 50, after }, { prisma, user }, info) {
   requireAuth(user);
 
   const allEntries = await prisma.child({ id }).logEntries();
   const logEntries = paginateResults({
     after,
     pageSize,
-    results: allEntries
+    results: allEntries,
+    getCursor: entry => entry.createdAt
   });
   return {
     logEntries,
-    cursor: logEntries.length ? logEntries[logEntries.length - 1].cursor : null,
+    cursor: logEntries.length
+      ? logEntries[logEntries.length - 1].createdAt
+      : null,
     hasMore: logEntries.length
-      ? logEntries[logEntries.length - 1].cursor !==
-        allEntries[allEntries.length - 1].cursor
+      ? logEntries[logEntries.length - 1].createdAt !==
+        allEntries[allEntries.length - 1].createdAt
       : false
   };
 }

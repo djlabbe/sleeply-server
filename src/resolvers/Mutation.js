@@ -120,7 +120,7 @@ async function addNightEntry(
 
   // Only the child's parent(s) are authorized to create entries
   const parent = await prisma.child({ id: childId }).parent();
-  if (use.id !== parent.id) {
+  if (user.id !== parent.id) {
     throw new Error('Not authorized');
   }
 

@@ -1,4 +1,4 @@
-// Paginate results function used from the apollographql tutorial at
+// paginateResults function used from the apollographql tutorial at
 // https://www.apollographql.com/docs/tutorial/resolvers/
 
 module.exports.paginateResults = ({
@@ -11,6 +11,7 @@ module.exports.paginateResults = ({
   if (pageSize < 1) return [];
 
   if (!cursor) return results.slice(0, pageSize);
+
   const cursorIndex = results.findIndex(item => {
     // if an item has a `cursor` on it, use that, otherwise try to generate one
     let itemCursor = item.cursor ? item.cursor : getCursor(item);
