@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
-const { authenticate } = require('../services/auth');
+const { authenticate } = require('../services/authentication');
 
 async function signup(root, args, { prisma }, info) {
   const password = await bcrypt.hash(args.password, 10);
@@ -25,7 +25,7 @@ async function login(root, { email, password }, { prisma }, info) {
     throw new Error("Oops, that's not a match");
   }
 
-  const token = jwt.sign({ userId: user.id }, keys.jwtSecret);
+  const token = jwt.sign({ userId: user.id, role: user.role }, keys.jwtSecret);
 
   return {
     token,

@@ -3,6 +3,7 @@ type User {
   name: String!
   email: String! @unique
   password: String!
+  role: String! @default(value: "USER")
   children: [Child!]!
 }
 

@@ -1,8 +1,16 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   type Query {
     me: User
+    logsForChild(childId: ID!): ChildLogs!
+  }
+
+  type ChildLogs {
+    morningEntries: [MorningEntry!]!
+    napEntries: [NapEntry!]!
+    bedTimeEntries: [BedTimeEntry!]!
+    nightWakingEntries: [NightWakingEntry!]!
   }
 
   type Mutation {
@@ -46,6 +54,12 @@ const typeDefs = gql`
     name: String!
     email: String!
     children: [Child!]!
+    role: UserRoll!
+  }
+
+  enum UserRoll {
+    ADMIN
+    USER
   }
 
   type Child {
