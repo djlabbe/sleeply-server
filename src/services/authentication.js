@@ -1,7 +1,25 @@
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 
-function authenticate(request) {
+function tradeTokenForUser(authToken) {
+  let userId = authToken
+    ? jwt.verify(authToken.replace('Bearer ', ''), keys.jwtSecret).userId
+    : null;
+
+  return userId;
+}
+
+function requireAuth(user) {
+  if (!user) throw new Error('Not authorized');
+}
+
+function requireAdmin(user) {
+  if (user.role !== 'ADMIN') throw new Error('Not authorized');
+}
+
+// Not currently used. Previously, this was called on every graph end point,
+// resulting in a lot of extra processing for complex queries.
+function authenticateRequest(request) {
   let authToken = request.req.get('Authorization') || '';
   let userId = null;
 
@@ -17,7 +35,9 @@ function authenticate(request) {
   return userId;
 }
 
-function admin(request) {
+// Not currently used. Previously, this was called on every graph end point,
+// resulting in a lot of extra processing for complex queries.
+function authenticateAdminRequest(request) {
   let authToken = request.req.get('Authorization') || '';
   let userId = null;
   let role = null;
@@ -37,6 +57,9 @@ function admin(request) {
 }
 
 module.exports = {
-  authenticate,
-  admin
+  tradeTokenForUser,
+  requireAuth,
+  requireAdmin,
+  authenticateRequest,
+  authenticateAdminRequest
 };

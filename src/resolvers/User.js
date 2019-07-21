@@ -1,7 +1,7 @@
-const { authenticate } = require('../services/authentication');
+const { requireAuth } = require('../services/authentication');
 
-function children({ id }, args, { prisma, request }, info) {
-  authenticate(request);
+function children({ id }, args, { prisma, user }, info) {
+  requireAuth(user);
   return prisma.user({ id }).children();
 }
 

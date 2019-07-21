@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
-const { authenticate } = require('../services/authentication');
+const { requireAuth } = require('../services/authentication');
 
 async function signup(root, args, { prisma }, info) {
   const password = await bcrypt.hash(args.password, 10);
@@ -36,14 +36,14 @@ async function login(root, { email, password }, { prisma }, info) {
 async function addMorningEntry(
   root,
   { note, date, childId, wakeUpTime, outOfBedTime },
-  { prisma, request },
+  { prisma, user },
   info
 ) {
-  const userId = authenticate(request);
+  requireAuth(user);
 
   // Only the child's parent(s) are authorized to create entries
   const parent = await prisma.child({ id: childId }).parent();
-  if (userId !== parent.id) {
+  if (user.id !== parent.id) {
     throw new Error('Not authorized');
   }
 
@@ -54,21 +54,21 @@ async function addMorningEntry(
     note,
     wakeUpTime,
     outOfBedTime,
-    createdBy: { connect: { id: userId } }
+    createdBy: { connect: { id: user.id } }
   });
 }
 
 async function addNapEntry(
   root,
   { note, date, childId, startTime, asleepTime, wakeUpTime },
-  { prisma, request },
+  { prisma, user },
   info
 ) {
-  const userId = authenticate(request);
+  requireAuth(user);
 
   // Only the child's parent(s) are authorized to create entries
   const parent = await prisma.child({ id: childId }).parent();
-  if (userId !== parent.id) {
+  if (user.id !== parent.id) {
     throw new Error('Not authorized');
   }
 
@@ -80,21 +80,21 @@ async function addNapEntry(
     startTime,
     asleepTime,
     wakeUpTime,
-    createdBy: { connect: { id: userId } }
+    createdBy: { connect: { id: user.id } }
   });
 }
 
 async function addBedTimeEntry(
   root,
   { note, date, childId, startTime, inBedTime, asleepTime },
-  { prisma, request },
+  { prisma, user },
   info
 ) {
-  const userId = authenticate(request);
+  requireAuth(user);
 
   // Only the child's parent(s) are authorized to create entries
   const parent = await prisma.child({ id: childId }).parent();
-  if (userId !== parent.id) {
+  if (user.id !== parent.id) {
     throw new Error('Not authorized');
   }
 
@@ -106,21 +106,21 @@ async function addBedTimeEntry(
     startTime,
     inBedTime,
     asleepTime,
-    createdBy: { connect: { id: userId } }
+    createdBy: { connect: { id: user.id } }
   });
 }
 
 async function addNightEntry(
   root,
   { note, date, childId, wakeUpTime, asleepTime },
-  { prisma, request },
+  { prisma, user },
   info
 ) {
-  const userId = authenticate(request);
+  requireAuth(user);
 
   // Only the child's parent(s) are authorized to create entries
   const parent = await prisma.child({ id: childId }).parent();
-  if (userId !== parent.id) {
+  if (use.id !== parent.id) {
     throw new Error('Not authorized');
   }
 
@@ -131,15 +131,15 @@ async function addNightEntry(
     note,
     wakeUpTime,
     asleepTime,
-    createdBy: { connect: { id: userId } }
+    createdBy: { connect: { id: user.id } }
   });
 }
 
-function addChild(root, { name }, { prisma, request }, info) {
-  const userId = authenticate(request);
+function addChild(root, { name }, { prisma, user }, info) {
+  requireAuth(user);
   return prisma.createChild({
     name,
-    parent: { connect: { id: userId } }
+    parent: { connect: { id: user.id } }
   });
 }
 

@@ -3,8 +3,8 @@ const { gql } = require('apollo-server');
 const typeDefs = gql`
   type Query {
     me: User
-    childLogs(childId: ID!, pageSize: Int, after: String): LogConnection!
   }
+
   type LogConnection {
     cursor: String!
     hasMore: Boolean!
@@ -68,7 +68,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     parent: User!
-    logEntries: [LogEntry!]!
+    logs(pageSize: Int, after: String): LogConnection!
   }
 
   type AuthPayload {
