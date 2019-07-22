@@ -6,23 +6,21 @@ function parent({ id }, args, { prisma, user }, info) {
   return prisma.child({ id }).parent();
 }
 
-async function logs({ id }, { pageSize = 50, after }, { prisma, user }, info) {
+async function log({ id }, { pageSize = 50, after }, { prisma, user }, info) {
   requireAuth(user);
 
   const allEntries = await prisma.child({ id }).logEntries();
-  const logEntries = paginateResults({
+  const entries = paginateResults({
     after,
     pageSize,
     results: allEntries,
     getCursor: entry => entry.createdAt
   });
   return {
-    logEntries,
-    cursor: logEntries.length
-      ? logEntries[logEntries.length - 1].createdAt
-      : null,
-    hasMore: logEntries.length
-      ? logEntries[logEntries.length - 1].createdAt !==
+    entries,
+    cursor: entries.length ? entries[entries.length - 1].createdAt : null,
+    hasMore: entries.length
+      ? entries[entries.length - 1].createdAt !==
         allEntries[allEntries.length - 1].createdAt
       : false
   };
@@ -30,5 +28,5 @@ async function logs({ id }, { pageSize = 50, after }, { prisma, user }, info) {
 
 module.exports = {
   parent,
-  logs
+  log
 };

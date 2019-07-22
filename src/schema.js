@@ -3,6 +3,7 @@ const { gql } = require('apollo-server');
 const typeDefs = gql`
   type Query {
     me: User
+    child(id: ID!): Child
   }
 
   type Mutation {
@@ -66,13 +67,13 @@ const typeDefs = gql`
     id: ID!
     name: String!
     parent: User!
-    logs(pageSize: Int, after: String): LogConnection!
+    log(pageSize: Int, after: String): LogConnection!
   }
 
   type LogConnection {
     cursor: String!
     hasMore: Boolean!
-    logEntries: [LogEntry!]!
+    entries: [LogEntry!]!
   }
 
   type LogEntry {

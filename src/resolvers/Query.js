@@ -5,6 +5,11 @@ function me(root, args, { prisma, user }, info) {
   return prisma.user({ id: user.id });
 }
 
+function child(root, { id }, { prisma, user }, info) {
+  requireAuth(user);
+  return prisma.child({ id });
+}
 module.exports = {
-  me
+  me,
+  child
 };
