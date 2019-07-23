@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
+const { AuthenticationError, AuthorizationError } = require('apollo-server');
 
 function tradeTokenForUser(authToken) {
   let userId = authToken
@@ -10,11 +11,11 @@ function tradeTokenForUser(authToken) {
 }
 
 function requireAuth(user) {
-  if (!user) throw new Error('Not authorized');
+  if (!user) throw new AuthenticationError('Not authorized');
 }
 
 function requireAdmin(user) {
-  if (user.role !== 'ADMIN') throw new Error('Not authorized');
+  if (user.role !== 'ADMIN') throw new AuthorizationError('Not authorized');
 }
 
 // Not currently used. Previously, this was called on every graph end point,
@@ -31,7 +32,7 @@ function authenticateRequest(request) {
     userId = jwtToken.userId;
   }
 
-  if (!userId) throw new Error('Not authorized');
+  if (!userId) throw new AuthenticationError('Not authorized');
   return userId;
 }
 
@@ -51,8 +52,8 @@ function authenticateAdminRequest(request) {
     role = jwtToken.role;
   }
 
-  if (!userId) throw new Error('Not authorized');
-  if (role !== 'ADMIN') throw new Error('Not authorized');
+  if (!userId) throw new AuthenticationError('Not authorized');
+  if (role !== 'ADMIN') throw new AuthorizationError('Not authorized');
   return userId;
 }
 
